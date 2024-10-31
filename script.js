@@ -1,62 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Камень, Ножницы, Бумага</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        .game-container {
-            margin-top: 50px;
-        }
-        .results {
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
-        .choices-container {
-            margin-top: 20px;
-        }
-        .choice-button {
-            margin: 10px;
-            padding: 15px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .spinner {
-            width: 100px;
-            height: 100px;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <div class="game-container">
-        <h1>Камень, Ножницы, Бумага</h1>
-        <img src="https://via.placeholder.com/150" alt="Game Image"/>
-        <br><br>
-        <button id="playButton">Играть</button>
-        <div id="choicesArea" class="choices-container" style="display: none;">
-            <button class="choice-button" id="rock">Камень</button>
-            <button class="choice-button" id="scissors">Ножницы</button>
-            <button class="choice-button" id="paper">Бумага</button>
-        </div>
-        <div id="spinnerArea" style="display: none;">
-            <img id="spinnerImage" class="spinner" src="https://via.placeholder.com/100" alt="Спиннер">
-        </div>
-        <div id="gameArea" class="results" style="display: none;">
-            <p>Компьютер выбрал: <span id="computerChoice"></span></p>
-            <p>Вы выбрали: <span id="playerChoice"></span></p>
-            <p>Результат: <span id="result"></span></p>
-            <p>Ваши очки: <span id="playerPoints">0</span></p>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+let playerPoints = 0;
+
+// Событие на нажатие кнопки "Играть"
+document.getElementById("playButton").addEventListener("click", function() {
+    document.getElementById("choicesArea").style.display = "block";
+    document.getElementById("gameArea").style.display = "none";
+});
+
+// Варианты выбора
+const choices = ["Камень", "Ножницы", "Бумага"];
+
+// События на нажатие кнопок выбора
+const choiceButtons = document.getElementsByClassName("choice-button");
+for (let button of choiceButtons) {
+    button.addEventListener("click", function() {
+        startSpinner(button.id);
+    });
+}
+
+// Запуск спиннера, затем выполнение логики игры
+function startSpinner(playerChoice) {
+    document.getElementById("spinnerArea").style.display = "block";
+    document.getElementById("choicesArea").style.display = "none";
+
+    // Имитируем вращение изображений в течение 2 секунд
+    setTimeout(function() {
+        document.getElementById("spinnerArea").style.display = "none";
+        playGame(playerChoice);
+    }, 2000);
+}
+
+// Основная логика игры
+function playGame(playerChoice) {
+    // Преобразование playerChoice в формат "Камень", "Ножницы", "Бумага"
+    playerChoice = playerChoice === "rock" ? "Камень" : playerChoice === "scissors" ? "Ножницы" : "Бумага";
+    
+    // Выбор компьютера
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    
+    // Вычисление результата
+    let result;
+    if (playerChoice === computerChoice) {
+        result = "Ничья";
+    } else if (
+        (playerChoice === "Камень" && computerChoice === "Ножницы") ||
+        (playerChoice === "Ножницы" && computerChoice === "Бумага") ||
+        (playerChoice === "Бумага" && computerChoice === "Камень")
+    ) {
+        result = "Вы выиграли!";
+        playerPoints++;
+    } else {
+        result = "Компьютер выиграл!";
+    }
+    
+    // Отображение результатов
+    document.getElementById("gameArea").style.display = "block";
+    document.getElementById("choicesArea").style.display = "none";
+    document.getElementById("computerChoice").innerText = computerChoice;
+    document.getElementById("playerChoice").innerText = playerChoice;
+    document.getElementById("result").innerText = result;
+    document.getElementById("playerPoints").innerText = playerPoints;
+}
