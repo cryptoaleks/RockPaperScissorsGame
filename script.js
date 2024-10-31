@@ -8,6 +8,11 @@ document.getElementById("playButton").addEventListener("click", function() {
 
 // Варианты выбора
 const choices = ["Камень", "Ножницы", "Бумага"];
+const images = {
+    "Камень": "https://github.com/cryptoaleks/RockPaperScissorsGame/raw/main/images/gratis-png-hand-rock-paper-scissors-iconos-de-computadora-hand-thumbnail.png",
+    "Ножницы": "https://github.com/cryptoaleks/RockPaperScissorsGame/raw/main/images/gratis-png-tijeras-de-piedra-papel-iconos-de-computadora-tijeras.png",
+    "Бумага": "https://github.com/cryptoaleks/RockPaperScissorsGame/raw/main/images/images.png"
+};
 
 // События на нажатие кнопок выбора
 const choiceButtons = document.getElementsByClassName("choice-button");
@@ -36,6 +41,9 @@ function playGame(playerChoice) {
     
     // Выбор компьютера
     const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    
+    // Обновление изображения спиннера на окончательное
+    document.getElementById("spinnerImage").src = images[computerChoice];
     
     // Вычисление результата
     let result;
